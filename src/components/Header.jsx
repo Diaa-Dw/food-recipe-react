@@ -8,6 +8,7 @@ import {
   SearchButton
 } from "./styles/Header.styled";
 import logo from "../assets/logo.png";
+import darkLogo from "../assets/dark-logo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBookmark,
@@ -16,9 +17,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import BoookmarkCard from "./BoookmarkCard";
 
-export default function Header({ dispatch, setIsDark, bookmark }) {
+export default function Header({ dispatch, setIsDark, bookmark, isDark }) {
   const [search, setSearch] = useState("");
   const [toggleTheme, setToggleTheme] = useState(false);
+  const [isbookmarkOpen, setIsBookmarkOpen] = useState(false);
+
+  const handleOpenmark = (val) => {
+    setIsBookmarkOpen(val);
+  };
 
   const handleToggleTheme = () => {
     setIsDark((s) => !s);
@@ -31,7 +37,7 @@ export default function Header({ dispatch, setIsDark, bookmark }) {
   };
   return (
     <HeaderStyled>
-      <Logo src={logo} alt="logo" />
+      <Logo src={isDark ? darkLogo : logo} alt="logo" />
       <HeaderForm onSubmit={(e) => handleSearch(e)}>
         <input
           value={search}
@@ -46,12 +52,18 @@ export default function Header({ dispatch, setIsDark, bookmark }) {
       </HeaderForm>
       <NavList>
         <ul>
-          <li className="bookmark">
+          <li
+            className="bookmark"
+            onMouseEnter={() => handleOpenmark(true)}
+            onMouseLeave={() => handleOpenmark(false)}
+          >
             <button>
               <FontAwesomeIcon icon={faBookmark} />
               <span>BOOKMARKS</span>
             </button>
-            <BoookmarkCard bookmark={bookmark} />
+            {isbookmarkOpen && (
+              <BoookmarkCard dispatch={dispatch} bookmark={bookmark} />
+            )}
           </li>
 
           <li>

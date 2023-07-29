@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import { response } from "./response";
 
 export const HeaderStyled = styled.header`
   display: flex;

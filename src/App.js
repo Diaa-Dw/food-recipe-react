@@ -13,7 +13,7 @@ function App() {
   return (
     <ThemeProvider theme={isDark ? theme.dark : theme.light}>
       <AppContainer>
-        <Container setIsDark={setIsDark}></Container>
+        <Container setIsDark={setIsDark} isDark={isDark}></Container>
       </AppContainer>
     </ThemeProvider>
   );

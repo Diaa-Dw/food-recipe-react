@@ -3,8 +3,10 @@ import { BookmarkCardContainer } from "./styles/bookmarkCard.styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import Bookmark from "./Bookmark";
-export default function BoookmarkCard({ bookmark }) {
-  console.log(bookmark);
+export default function BoookmarkCard({ bookmark, dispatch }) {
+  const handleSelectBookmark = (id) => {
+    dispatch({ type: "selectRecipe", payload: id });
+  };
   return (
     <BookmarkCardContainer>
       {bookmark.length === 0 && (
@@ -15,7 +17,12 @@ export default function BoookmarkCard({ bookmark }) {
       )}
 
       {bookmark.length > 0 &&
-        bookmark.map((recipe) => <Bookmark recipe={recipe} />)}
+        bookmark.map((recipe) => (
+          <Bookmark
+            recipe={recipe}
+            handleSelectBookmark={handleSelectBookmark}
+          />
+        ))}
     </BookmarkCardContainer>
   );
 }

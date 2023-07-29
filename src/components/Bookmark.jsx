@@ -1,13 +1,18 @@
 import React from "react";
+import { BoomarkCard } from "./styles/bookmark.styled";
 
-export default function Bookmark({ recipe }) {
+export default function Bookmark({ recipe, handleSelectBookmark }) {
+  if (recipe.title.length > 30)
+    recipe.title = recipe.title.slice(0, 30) + "...";
   return (
-    <div>
-      <img src={recipe.image_url} alt={recipe.title} />
+    <BoomarkCard onClick={() => handleSelectBookmark(recipe.id)}>
+      <div className="image-container">
+        <img src={recipe.image_url} alt={recipe.title} />
+      </div>
       <div className="context">
-        <h3>{recipe.title}</h3>
+        <p>{recipe.title}</p>
         <p>{recipe.publisher}</p>
       </div>
-    </div>
+    </BoomarkCard>
   );
 }

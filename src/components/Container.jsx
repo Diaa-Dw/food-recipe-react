@@ -12,7 +12,7 @@ const initialState = {
   selectedItem: null,
   recipeLoading: false,
   recipe: null,
-  bookmark: []
+  bookmark: JSON.parse(localStorage.getItem("bookmarks")) || []
 };
 
 function reducer(state, action) {
@@ -50,7 +50,7 @@ function reducer(state, action) {
   }
 }
 
-export default function Container({ setIsDark }) {
+export default function Container({ setIsDark, isDark }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const {
     query,
@@ -77,6 +77,10 @@ export default function Container({ setIsDark }) {
   }, [query]);
 
   useEffect(() => {
+    localStorage.setItem("bookmarks", JSON.stringify(bookmark));
+  }, [bookmark]);
+
+  useEffect(() => {
     if (selectedItem === null) return;
     const fetchRecipe = async () => {
       const res = await fetch(
@@ -89,7 +93,12 @@ export default function Container({ setIsDark }) {
   }, [selectedItem]);
   return (
     <ContainerStyle>
-      <Header dispatch={dispatch} setIsDark={setIsDark} bookmark={bookmark} />
+      <Header
+        dispatch={dispatch}
+        setIsDark={setIsDark}
+        bookmark={bookmark}
+        isDark={isDark}
+      />
       <RecipeContainer>
         <SearchResult
           status={status}
