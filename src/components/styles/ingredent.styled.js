@@ -7,7 +7,11 @@ export const IngredientContainer = styled.div`
     margin-right: 1rem;
     margin-top: 0.3rem;
   }
-  & > span {
-    margin-right: 0.5rem;
+
+  & > p {
+    margin-right: 0.2rem;
+  }
+  .quanitiy {
+    width: "fit-content";
   }
 `;

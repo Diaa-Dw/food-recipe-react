@@ -6,9 +6,9 @@ export default function Ingredient({ description, unit, quantity }) {
   return (
     <IngredientContainer>
       <FontAwesomeIcon icon={faCheck} />
-      <span>{quantity} </span>
-      <span>{unit} </span>
-      <span>{description}</span>
+      <p className="quanitiy">{quantity} </p>
+      <p>{unit} </p>
+      <p>{description}</p>
     </IngredientContainer>
   );
 }

@@ -109,6 +109,14 @@ export const RecipeDetailsContainer = styled.div`
       font-weight: 500;
     }
   }
+  .ing-btn {
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      transform: translateY(-0.2rem);
+    }
+  }
 `;
 
 export const RecipeIngredient = styled.div`
