@@ -22,7 +22,7 @@ export default function Header({ dispatch, setIsDark, bookmark, isDark }) {
   const [search, setSearch] = useState("");
   const [toggleTheme, setToggleTheme] = useState(false);
   const [isbookmarkOpen, setIsBookmarkOpen] = useState(false);
-  const [isOpened, setIsOpened] = useState(true);
+  const [isOpened, setIsOpened] = useState(false);
 
   const handleOpenmark = (val) => {
     setIsBookmarkOpen(val);

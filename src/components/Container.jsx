@@ -127,7 +127,7 @@ export default function Container({ setIsDark, isDark }) {
   }, [selectedItem]);
   return (
     <ContainerStyle>
-      {error !== null && <ErrorBar dispatch={dispatch} message={error} />}
+      {error !== null ? <ErrorBar dispatch={dispatch} message={error} /> : null}
 
       <Header
         dispatch={dispatch}

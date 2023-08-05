@@ -29,7 +29,7 @@ export default function RecipeDescription({
       {selectedItem === null && <EmpetyMessage />}
       {recipeLoading && <Loader />}
       {recipe && recipeLoading === false && (
-        <RecipeDetails
+        <RecipeDeptails
           recipe={recipe}
           isBookmarked={isBookmarked}
           dispatch={dispatch}
