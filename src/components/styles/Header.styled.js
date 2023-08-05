@@ -1,5 +1,5 @@
-import { keyframes, styled } from "styled-components";
-import respond, { response } from "./response";
+import { styled } from "styled-components";
+import respond from "./response";
 
 export const HeaderStyled = styled.header`
   display: flex;
