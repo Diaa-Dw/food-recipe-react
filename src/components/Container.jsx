@@ -3,6 +3,7 @@ import { ContainerStyle, RecipeContainer } from "./styles/Container.styled";
 import Header from "./Header";
 import SearchResult from "./SearchResult";
 import RecipeDescription from "./RecipeDescription";
+import ErrorBar from "./ErrorBar";
 
 const initialState = {
   query: "",
@@ -12,7 +13,8 @@ const initialState = {
   selectedItem: null,
   recipeLoading: false,
   recipe: null,
-  bookmark: JSON.parse(localStorage.getItem("bookmarks")) || []
+  bookmark: JSON.parse(localStorage.getItem("bookmarks")) || [],
+  error: null
 };
 
 function reducer(state, action) {
@@ -24,7 +26,11 @@ function reducer(state, action) {
         ...state,
         status: "ready",
         receipes: action.payload.data.recipes,
-        recipesCount: action.payload.results
+        recipesCount: action.payload.results,
+        error:
+          action.payload.data.recipes.length === 0
+            ? "Sorry, no suitable recipe found. attempt new keywords."
+            : null
       };
     case "selectRecipe":
       return {
@@ -36,6 +42,8 @@ function reducer(state, action) {
       };
     case "setRecipe":
       return { ...state, recipeLoading: false, recipe: action.payload };
+    case "setError":
+      return { ...state, isLoading: false, error: action.payload };
     case "bookmark":
       return {
         ...state,
@@ -45,6 +53,8 @@ function reducer(state, action) {
             )
           : [...state.bookmark, action.payload.newRecipe]
       };
+    case "resetError":
+      return { ...state, error: null };
     default:
       return state;
   }
@@ -59,19 +69,31 @@ export default function Container({ setIsDark, isDark }) {
     selectedItem,
     recipeLoading,
     recipe,
-    bookmark
+    bookmark,
+    error
   } = state;
-  console.log(bookmark);
 
-  console.log(recipe);
   useEffect(() => {
     const loadRecipe = async () => {
-      if (query.length < 2) return;
-      const res = await fetch(
-        `https://forkify-api.herokuapp.com/api/v2/recipes/?search=${query}`
-      );
-      const data = await res.json();
-      dispatch({ type: "setRecipes", payload: data });
+      try {
+        const fetchPromise = fetch(
+          `https://forkify-api.herokuapp.com/api/v2/recipes/?search=${query}`
+        );
+
+        const timeoutPromise = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject(new Error("Fetch took too long (more than 1 minute)."));
+          }, 19000);
+        });
+
+        const res = await Promise.race([fetchPromise, timeoutPromise]);
+        if (!res.ok) throw new Error("somthing went wrong while fetching data");
+
+        const data = await res.json();
+        dispatch({ type: "setRecipes", payload: data });
+      } catch (err) {
+        dispatch({ type: "setError", payload: err.message });
+      }
     };
     loadRecipe();
   }, [query]);
@@ -83,16 +105,30 @@ export default function Container({ setIsDark, isDark }) {
   useEffect(() => {
     if (selectedItem === null) return;
     const fetchRecipe = async () => {
-      const res = await fetch(
-        `https://forkify-api.herokuapp.com/api/v2/recipes/${selectedItem}`
-      );
-      const { data } = await res.json();
-      dispatch({ type: "setRecipe", payload: data.recipe });
+      try {
+        const fetchPromise = fetch(
+          `https://forkify-api.herokuapp.com/api/v2/recipes/${selectedItem}`
+        );
+        const timeoutPromise = new Promise((resolve, reject) => {
+          setTimeout(() => {
+            reject(new Error("Fetch took too long (more than 1 minute)."));
+          }, 10000);
+        });
+        const res = await Promise.race([fetchPromise, timeoutPromise]);
+
+        if (!res.ok) throw new Error("somthing went wrong while fetching data");
+        const { data } = await res.json();
+        dispatch({ type: "setRecipe", payload: data.recipe });
+      } catch (err) {
+        dispatch({ type: "setError", payload: err.message });
+      }
     };
     fetchRecipe();
   }, [selectedItem]);
   return (
     <ContainerStyle>
+      {error !== null && <ErrorBar dispatch={dispatch} message={error} />}
+
       <Header
         dispatch={dispatch}
         setIsDark={setIsDark}

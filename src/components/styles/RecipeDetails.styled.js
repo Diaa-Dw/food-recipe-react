@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import respond from "./response";
 
 export const RecipeDetailsContainer = styled.div`
   width: 100%;
@@ -31,6 +32,12 @@ export const RecipeDetailsContainer = styled.div`
     width: 50%;
     line-height: 1.95;
     text-align: center;
+
+    ${respond("tab-port")`
+    font-size:1.8rem;
+    line-height: 2.2;
+
+  `}
   }
   h2 span {
     background: ${(props) => props.theme.gradient};
@@ -42,6 +49,10 @@ export const RecipeDetailsContainer = styled.div`
   .nav-list {
     padding: 8rem 6rem 8rem 6rem;
     background-color: ${(props) => props.theme.resutBackground};
+
+    ${respond("phone")`
+    padding: 6rem 1rem 6rem 1rem;
+    `}
 
     ul {
       list-style: none;
@@ -130,5 +141,8 @@ export const RecipeIngredient = styled.div`
   }
   .ingredients-container > div {
     flex: 45%;
+    ${respond("phone")`
+    flex:100%;
+    `}
   }
 `;

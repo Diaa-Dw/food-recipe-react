@@ -3,9 +3,10 @@ import { BookmarkCardContainer } from "./styles/bookmarkCard.styled";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTriangleExclamation } from "@fortawesome/free-solid-svg-icons";
 import Bookmark from "./Bookmark";
-export default function BoookmarkCard({ bookmark, dispatch }) {
+export default function BoookmarkCard({ bookmark, dispatch, setIsOpened }) {
   const handleSelectBookmark = (id) => {
     dispatch({ type: "selectRecipe", payload: id });
+    setIsOpened(false);
   };
   return (
     <BookmarkCardContainer>
@@ -21,6 +22,7 @@ export default function BoookmarkCard({ bookmark, dispatch }) {
           <Bookmark
             recipe={recipe}
             handleSelectBookmark={handleSelectBookmark}
+            key={recipe.id}
           />
         ))}
     </BookmarkCardContainer>
