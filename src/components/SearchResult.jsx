@@ -30,7 +30,7 @@ export default function SearchResult({
   };
 
   useEffect(() => {
-    setIsOpened(true);
+    if (receipes.length > 0) setIsOpened(true);
   }, [receipes]);
 
   const handleSelectRecipe = (id) => {
