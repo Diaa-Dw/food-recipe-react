@@ -17,7 +17,7 @@ export default function SearchResult({
 }) {
   const [recipePage, setRecipePage] = useState([0, 11]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [isOpened, setIsOpened] = useState(true);
+  const [isOpened, setIsOpened] = useState(false);
   console.log(receipes);
 
   useEffect(() => {
