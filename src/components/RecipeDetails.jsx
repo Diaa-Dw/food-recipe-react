@@ -34,12 +34,7 @@ function reducer(state, action) {
   }
 }
 
-export default function RecipeDetails({
-  recipe,
-  setBookmarks,
-  isBookmarked,
-  dispatch
-}) {
+function RecipeDetails({ recipe, setBookmarks, isBookmarked, dispatch }) {
   const intialState = {
     servings: recipe.servings,
     ingredients: recipe.ingredients
@@ -146,3 +141,5 @@ export default function RecipeDetails({
     </RecipeDetailsContainer>
   );
 }
+
+export default RecipeDetails;
