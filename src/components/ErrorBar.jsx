@@ -1,35 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Alert } from "./styles/ErrorBar.styled";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faTriangleExclamation,
-  faXmark
-} from "@fortawesome/free-solid-svg-icons";
-export default function ErrorBar({ message, dispatch }) {
-  const [close, setClose] = useState(false);
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+
+export default function ErrorBar({ message, dispatch, isDark }) {
   const handleClose = () => {
     dispatch({ type: "resetError" });
-    setClose(true);
   };
   useEffect(() => {
     setTimeout(() => {
       handleClose();
-    }, 8000);
+    }, 1000);
   });
-  if (close) return null;
 
   return (
-    <Alert>
-      <div class="icon__wrapper">
-        <span>
-          <FontAwesomeIcon icon={faTriangleExclamation} />
-        </span>
-      </div>
-      <p>{message}</p>
-      <span class="mdi mdi-open-in-new open"></span>
-      <span class="mdi mdi-close close" onClick={handleClose}>
-        <FontAwesomeIcon icon={faXmark} />
-      </span>
-    </Alert>
+    <div style={{ width: 0, height: 0, color: "transparent" }}>
+      {toast.error(`${message}`, {
+        style: {
+          borderRadius: "10px",
+          background: isDark ? "#333" : "#fff",
+          color: isDark ? "#fff" : "#333",
+        },
+      })}
+    </div>
   );
 }

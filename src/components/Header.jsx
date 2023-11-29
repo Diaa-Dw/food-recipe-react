@@ -6,7 +6,7 @@ import {
   ModeContainer,
   NavIcon,
   NavList,
-  SearchButton
+  SearchButton,
 } from "./styles/Header.styled";
 import logo from "../assets/logo.png";
 import darkLogo from "../assets/dark-logo.png";
@@ -14,7 +14,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBookmark,
   faMagnifyingGlass,
-  faUser
 } from "@fortawesome/free-solid-svg-icons";
 import BoookmarkCard from "./BoookmarkCard";
 
@@ -75,13 +74,6 @@ export default function Header({ dispatch, setIsDark, bookmark, isDark }) {
                 bookmark={bookmark}
               />
             )}
-          </li>
-
-          <li>
-            <button>
-              <FontAwesomeIcon icon={faUser} />
-              <span>LOGIN</span>
-            </button>
           </li>
 
           <li>

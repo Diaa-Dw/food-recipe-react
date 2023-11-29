@@ -4,6 +4,7 @@ import Header from "./Header";
 import SearchResult from "./SearchResult";
 import RecipeDescription from "./RecipeDescription";
 import ErrorBar from "./ErrorBar";
+import { Toaster } from "react-hot-toast";
 
 const initialState = {
   query: "",
@@ -14,7 +15,7 @@ const initialState = {
   recipeLoading: false,
   recipe: null,
   bookmark: JSON.parse(localStorage.getItem("bookmarks")) || [],
-  error: null
+  error: null,
 };
 
 function reducer(state, action) {
@@ -28,9 +29,9 @@ function reducer(state, action) {
         receipes: action.payload.data.recipes,
         recipesCount: action.payload.results,
         error:
-          action.payload.data.recipes.length === 0
+          action.payload.data.recipes.length === 0 && state.query !== ""
             ? "Sorry, no suitable recipe found. attempt new keywords."
-            : null
+            : null,
       };
     case "selectRecipe":
       return {
@@ -38,7 +39,7 @@ function reducer(state, action) {
         recipeLoading: state.selectedItem !== action.payload,
         selectedItem:
           state.selectedItem === action.payload ? null : action.payload,
-        recipe: state.selectedItem === action.payload ? null : state.recipe
+        recipe: state.selectedItem === action.payload ? null : state.recipe,
       };
     case "setRecipe":
       return { ...state, recipeLoading: false, recipe: action.payload };
@@ -51,7 +52,7 @@ function reducer(state, action) {
           ? state.bookmark.filter(
               (recipe) => recipe.id !== action.payload.newRecipe.id
             )
-          : [...state.bookmark, action.payload.newRecipe]
+          : [...state.bookmark, action.payload.newRecipe],
       };
     case "resetError":
       return { ...state, error: null };
@@ -70,7 +71,7 @@ export default function Container({ setIsDark, isDark }) {
     recipeLoading,
     recipe,
     bookmark,
-    error
+    error,
   } = state;
 
   useEffect(() => {
@@ -127,7 +128,9 @@ export default function Container({ setIsDark, isDark }) {
   }, [selectedItem]);
   return (
     <ContainerStyle>
-      {error !== null ? <ErrorBar dispatch={dispatch} message={error} /> : null}
+      {error !== null ? (
+        <ErrorBar isDark={isDark} dispatch={dispatch} message={error} />
+      ) : null}
 
       <Header
         dispatch={dispatch}
@@ -151,6 +154,8 @@ export default function Container({ setIsDark, isDark }) {
           bookmark={bookmark}
         />
       </RecipeContainer>
+
+      <Toaster position="top-right" reverseOrder={false} />
     </ContainerStyle>
   );
 }
